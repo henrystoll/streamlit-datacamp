@@ -7,7 +7,7 @@ import streamlit as st
 import altair as alt
 
 
-@st.cache
+# @st.cache
 def load_data():
     DATA_URL = "https://cbs2020-datacamp.azurewebsites.net/get_results"
 
