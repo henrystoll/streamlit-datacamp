@@ -15,7 +15,7 @@ def load_data():
     json_data = json.loads(req)['Results']
     # clean data
     df = pd.DataFrame(json_data)
-    df = df.drop(columns=['id'])
+    df = df.drop(columns=['id', 'email'])
     df['date'] = df['date'].apply(lambda s: s[:14] + "00:00")
     numeric_col = ['chapters_completed', 'courses_completed', 'xp']
     df[numeric_col] = df[numeric_col].apply(pd.to_numeric)
@@ -52,4 +52,4 @@ c = alt.Chart(filtered).mark_line().encode(
 st.altair_chart(c, use_container_width=True)
 
 st.subheader('Raw data')
-st.write(data)
+st.write(filtered)
