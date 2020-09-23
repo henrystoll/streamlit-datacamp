@@ -20,7 +20,7 @@ def load_data():
     numeric_col = ['chapters_completed', 'courses_completed', 'xp']
     df[numeric_col] = df[numeric_col].apply(pd.to_numeric)
     df['date'] = pd.to_datetime(df['date'])
-    # df = df[df['xp'] > 0]  # no values with null
+
     return df
 
 
@@ -30,9 +30,9 @@ data_load_state = st.text('Data loading...')
 data = load_data()
 # Notify the reader that the data was successfully loaded.
 data_load_state.text("")
-# data_load_state.text("Data cached")
 
 
+# TODO figure out why this is not working
 # st.line_chart(data[['xp', 'name', 'date']])
 
 st.sidebar.markdown("Interact with the data here")
@@ -44,10 +44,12 @@ datetime_start = (data.iloc[300, 2]).to_pydatetime()
 datetime_end = data.iloc[-1, 2].to_pydatetime()
 date_slider = st.sidebar.slider('End Date', datetime_start, datetime_end, datetime_end, timedelta(hours=1))
 
-# filtered = data[(data['xp'] > xp_slider) & (data['date'] < data.iloc[-94, 2])]
+y_select = st.sidebar.selectbox('What do you want plotted on the Y-Axis?', ('xp', 'courses_completed', 'chapters_completed'), 0, lambda s: s.replace('_', ' ').capitalize())
+
+
 filtered = data[(data['xp'] > xp_slider) & (data['date'] < date_slider)]
 c = alt.Chart(filtered).mark_line().encode(
-    x='date', y='xp', color='name', tooltip=['date', 'xp', 'name'])
+    x='date', y=y_select, color='name', tooltip=['date', 'xp', 'name'])
 
 st.altair_chart(c, use_container_width=True)
 
