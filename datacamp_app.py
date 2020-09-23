@@ -35,6 +35,8 @@ data_load_state.text("")
 
 # st.line_chart(data[['xp', 'name', 'date']])
 
+st.sidebar.markdown("Interact with the data here")
+
 max_xp = round(data['xp'].max() / 1000) * 1000
 xp_slider = st.sidebar.slider('Minimum XP', 0, max_xp, 2000, 1000)
 
